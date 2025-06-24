@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nguyễn Phước Điền | Data Engineer Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #64748b;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --card: #ffffff;
+            --success: #22c55e;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.7;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .profile-card {
+            background: var(--card);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--light);
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zm20.97 0l9.315 9.314-1.414 1.414L34.828 0h2.83zM22.344 0L13.03 9.314l1.414 1.414L25.172 0h-2.83zM32 0l12.142 12.142-1.414 1.414L30 .828 17.272 13.556l-1.414-1.414L28 0h4zM.284 0l28 28-1.414 1.414L0 2.544V0h.284zM0 5.373l25.456 25.455-1.414 1.415L0 8.2V5.374zm0 5.656l22.627 22.627-1.414 1.414L0 13.86v-2.83zm0 5.656l19.8 19.8-1.415 1.413L0 19.514v-2.83zm0 5.657l16.97 16.97-1.414 1.415L0 25.172v-2.83zM0 28l14.142 14.142-1.414 1.414L0 30.828V28zm0 5.657L11.314 44.97 9.9 46.386l-9.9-9.9v-2.828zm0 5.657L8.485 47.8 7.07 49.212 0 42.142v-2.83zm0 5.657l5.657 5.657-1.414 1.415L0 47.8v-2.83zm0 5.657l2.828 2.83-1.414 1.413L0 53.456v-2.83zM54.627 60L30 35.373 5.373 60H8.2L30 38.2 51.8 60h2.827zm-5.656 0L30 41.03 11.03 60h2.828L30 43.858 46.142 60h2.83zm-5.656 0L30 46.686 16.686 60h2.83L30 49.515 40.485 60h2.83zm-5.657 0L30 52.343 22.343 60h2.83L30 55.172 34.828 60h2.83zM32 60l-2-2-2 2h4zM59.716 0l-28 28 1.414 1.414L60 2.544V0h-.284zM60 5.373L34.544 30.828l1.414 1.415L60 8.2V5.374zm0 5.656L37.373 33.656l1.414 1.414L60 13.86v-2.83zm0 5.656l-19.8 19.8 1.415 1.413L60 19.514v-2.83zm0 5.657l-16.97 16.97 1.414 1.415L60 25.172v-2.83zM60 28L45.858 42.142l1.414 1.414L60 30.828V28zm0 5.657L48.686 44.97l1.415 1.415 9.9-9.9v-2.828zm0 5.657L51.515 47.8l1.414 1.414 7.07-7.07v-2.83zm0 5.657l-5.657 5.657 1.414 1.415L60 47.8v-2.83zm0 5.657l-2.828 2.83 1.414 1.413L60 53.456v-2.83zM39.9 16.385l1.414-1.414L30 3.658 18.686 14.97l1.415 1.415 9.9-9.9 9.9 9.9zm-2.83 2.828l1.415-1.414L30 9.313 21.515 17.8l1.414 1.413 7.07-7.07 7.07 7.07zm-2.827 2.83l1.414-1.416L30 14.97l-5.657 5.657 1.414 1.415L30 17.8l4.243 4.242zm-2.83 2.827l1.415-1.414L30 20.626l-2.828 2.83 1.414 1.414L30 23.456l1.414 1.414zM56.87 59.414L58.284 58 30 29.716 1.716 58l1.414 1.414L30 32.544l26.87 26.87z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .profile-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2.5rem;
+            padding: 2.5rem;
+        }
+
+        .sidebar {
+            position: relative;
+        }
+
+        .avatar-wrapper {
+            margin-top: -5rem;
+            margin-bottom: 2rem;
+        }
+
+        .avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            border: 6px solid var(--card);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .contact-info {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            color: var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .contact-item i {
+            width: 20px;
+            color: var(--primary);
+        }
+
+        .main-content section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-dark), transparent);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-item {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-item:hover {
+            background: var(--primary);
+            color: var(--light);
+            transform: translateY(-3px);
+        }
+
+        .skill-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .skill-item:hover::before {
+            left: 100%;
+        }
+
+        .hobbies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .hobby-tag {
+            background: var(--light);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .hobby-tag:hover {
+            background: var(--primary);
+            color: var(--light);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .avatar-wrapper {
+                margin-top: -3rem;
+                display: flex;
+                justify-content: center;
+            }
+
+            .avatar {
+                width: 150px;
+                height: 150px;
+                font-size: 50px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-card" data-aos="fade-up">
+            <header class="header">
+                <h1 class="profile-title">Nguyễn Phước Điền</h1>
+                <p class="profile-subtitle">Data Engineer Developer</p>
+            </header>
+
+            <main class="content">
+                <aside class="sidebar">
+                    <div class="avatar-wrapper" data-aos="fade-right">
+                        <img class="avatar" src="https://picsum.photos/200/300" alt="Avatar" />
+                    </div>
+                    
+                    <div class="contact-info" data-aos="fade-up">
+                        <a href="mailto:npd.iuh@gmail.com" class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>npd.iuh@gmail.com</span>
+                        </a>
+                        <a href="tel:0372700792" class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>0372700792</span>
+                        </a>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>TP.HCM, Việt Nam</span>
+                        </div>
+                        <a href="https://github.com/user" target="_blank" class="contact-item">
+                            <i class="fab fa-github"></i>
+                            <span>github.com</span>
+                        </a>
+                        <a href="https://linkedin.com/in/user" target="_blank" class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <span>linkedin.com</span>
+                        </a>
+                    </div>
+                </aside>
+
+                <div class="main-content">
+                    <section data-aos="fade-up">
+                        <h2 class="section-title">Giới Thiệu</h2>
+                        <p>
+                            Tôi là một Data Engineer Developer với hơn 3 năm kinh nghiệm trong việc xây dựng các ứng dụng web hiện đại.
+                            Chuyên môn của tôi bao gồm Python, JavaScript, React, và các công nghệ frontend tiên tiến.
+                        </p>
+                        <p>
+                            Tôi đam mê tạo ra những trải nghiệm người dùng tuyệt vời và luôn theo dõi các xu hướng công nghệ mới nhất.
+                        </p>
+                    </section>
+
+                    <section data-aos="fade-up">
+                        <h2 class="section-title">Kỹ Năng Chuyên Môn</h2>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <i class="fab fa-html5 fa-fw"></i> HTML5/CSS3
+                            </div>
+                            <div class="skill-item">
+                                <i class="fab fa-js fa-fw"></i> JavaScript
+                            </div>
+                            <div class="skill-item">
+                                <i class="fab fa-react fa-fw"></i> React
+                            </div>
+                            <div class="skill-item">
+                                <i class="fab fa-aws fa-fw"></i> AWS
+                            </div>
+                            <div class="skill-item">
+                                <i class="fab fa-node-js fa-fw"></i> Node.js
+                            </div>
+                            <div class="skill-item">
+                                <i class="fab fa-sass fa-fw"></i>  SASS/SCSS
+                            </div>
+                        </div>
+                    </section>
+
+                    <section data-aos="fade-up">
+                        <h2 class="section-title">Sở Thích</h2>
+                        <div class="hobbies">
+                            <span class="hobby-tag">Gaming</span>
+                            <span class="hobby-tag">Reading</span>
+                            <span class="hobby-tag">Music</span>
+                            <span class="hobby-tag">Running</span>
+                            <span class="hobby-tag">Traveling</span>
+                            <span class="hobby-tag">Photography</span>
+                            <span class="hobby-tag">Karate, Taekwondo</span>
+                        </div>
+                    </section>
+
+                    <section data-aos="fade-up">
+                        <h2 class="section-title">Mục Tiêu Nghề Nghiệp</h2>
+                        <p>
+                            Hướng tới vị trí Technical Lead, tôi mong muốn dẫn dắt các dự án lớn và 
+                            mentor cho các developer trẻ. Đồng thời, tôi cũng đang phát triển kỹ năng 
+                            về Cloud Computing và DevOps để trở thành một Full-stack Developer toàn diện.
+                        </p>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true
+        });
+    </script>
+</body>
+</html>
