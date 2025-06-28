@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Môn học yêu thích</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .subject-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .subject-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .subject-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .subject-code {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .subject-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .subject-difficulty {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .difficulty-label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .difficulty-stars {
+            color: #f39c12;
+        }
+
+        .subject-rating {
+            background: #27ae60;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .subject-card {
+                padding: 20px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .subjects-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Danh sách môn học yêu thích</h1>
+            <p>Chuyên ngành Khoa học máy tính</p>
+        </div>
+
+        <div class="subjects-grid">
+            <div class="subject-card">
+                <span class="subject-icon">💻</span>
+                <div class="subject-title">Lập trình hướng đối tượng</div>
+                <div class="subject-code">CS201</div>
+                <div class="subject-description">
+                    Học các khái niệm cơ bản về OOP, class, object, kế thừa, đa hình và đóng gói. Sử dụng Java/C++ để thực hành.
+                </div>
+                <div class="subject-difficulty">
+                    <span class="difficulty-label">Độ khó:</span>
+                    <span class="difficulty-stars">★★★☆☆</span>
+                </div>
+                <div class="subject-rating">Yêu thích: 95%</div>
+            </div>
+
+            <div class="subject-card">
+                <span class="subject-icon">🧠</span>
+                <div class="subject-title">Trí tuệ nhân tạo</div>
+                <div class="subject-code">CS301</div>
+                <div class="subject-description">
+                    Khám phá machine learning, neural networks, xử lý ngôn ngữ tự nhiên và computer vision. Ứng dụng Python và TensorFlow.
+                </div>
+                <div class="subject-difficulty">
+                    <span class="difficulty-label">Độ khó:</span>
+                    <span class="difficulty-stars">★★★★★</span>
+                </div>
+                <div class="subject-rating">Yêu thích: 98%</div>
+            </div>
+
+            <div class="subject-card">
+                <span class="subject-icon">🔐</span>
+                <div class="subject-title">An toàn thông tin</div>
+                <div class="subject-code">CS250</div>
+                <div class="subject-description">
+                    Tìm hiểu về mật mã học, bảo mật mạng, ethical hacking và các kỹ thuật bảo vệ hệ thống thông tin.
+                </div>
+                <div class="subject-difficulty">
+                    <span class="difficulty-label">Độ khó:</span>
+                    <span class="difficulty-stars">★★★★☆</span>
+                </div>
+                <div class="subject-rating">Yêu thích: 92%</div>
+            </div>
+
+            <div class="subject-card">
+                <span class="subject-icon">📊</span>
+                <div class="subject-title">Cấu trúc dữ liệu & Giải thuật</div>
+                <div class="subject-code">CS101</div>
+                <div class="subject-description">
+                    Nền tảng quan trọng về array, linked list, stack, queue, tree, graph và các thuật toán sắp xếp, tìm kiếm.
+                </div>
+                <div class="subject-difficulty">
+                    <span class="difficulty-label">Độ khó:</span>
+                    <span class="difficulty-stars">★★★★☆</span>
+                </div>
+                <div class="subject-rating">Yêu thích: 89%</div>
+            </div>
+
+            <div class="subject-card">
+                <span class="subject-icon">🌐</span>
+                <div class="subject-title">Phát triển Web</div>
+                <div class="subject-code">CS205</div>
+                <div class="subject-description">
+                    Học HTML, CSS, JavaScript, React, Node.js và database để xây dựng ứng dụng web full-stack hiện đại.
+                </div>
+                <div class="subject-difficulty">
+                    <span class="difficulty-label">Độ khó:</span>
+                    <span class="difficulty-stars">★★★☆☆</span>
+                </div>
+                <div class="subject-rating">Yêu thích: 94%</div>
+            </div>
+
+            <div class="subject-card">
+                <span class="subject-icon">🗄️</span>
+                <div class="subject-title">Cơ sở dữ liệu</div>
+                <div class="subject-code">CS180</div>
+                <div class="subject-description">
+                    Thiết kế database, SQL, NoSQL, normalization và tối ưu hóa truy vấn. Thực hành với MySQL và MongoDB.
+                </div>
+                <div class="subject-difficulty">
+                    <span class="difficulty-label">Độ khó:</span>
+                    <span class="difficulty-stars">★★★☆☆</span>
+                </div>
+                <div class="subject-rating">Yêu thích: 87%</div>
+            </div>
+
+            <div class="subject-card">
+                <span class="subject-icon">📱</span>
+                <div class="subject-title">Lập trình Mobile</div>
+                <div class="subject-code">CS220</div>
+                <div class="subject-description">
+                    Phát triển ứng dụng di động với React Native, Flutter hoặc native iOS/Android. UI/UX và publish app store.
+                </div>
+                <div class="subject-difficulty">
+                    <span class="difficulty-label">Độ khó:</span>
+                    <span class="difficulty-stars">★★★★☆</span>
+                </div>
+                <div class="subject-rating">Yêu thích: 91%</div>
+            </div>
+
+            <div class="subject-card">
+                <span class="subject-icon">☁️</span>
+                <div class="subject-title">Cloud Computing</div>
+                <div class="subject-code">CS350</div>
+                <div class="subject-description">
+                    Tìm hiểu AWS, Azure, Docker, Kubernetes, microservices và kiến trúc cloud-native cho ứng dụng quy mô lớn.
+                </div>
+                <div class="subject-difficulty">
+                    <span class="difficulty-label">Độ khó:</span>
+                    <span class="difficulty-stars">★★★★☆</span>
+                </div>
+                <div class="subject-rating">Yêu thích: 88%</div>
+            </div>
+
+            <div class="subject-card">
+                <span class="subject-icon">🎮</span>
+                <div class="subject-title">Lập trình Game</div>
+                <div class="subject-code">CS280</div>
+                <div class="subject-description">
+                    Phát triển game 2D/3D với Unity, Unreal Engine. Học về game mechanics, physics, AI trong game và optimization.
+                </div>
+                <div class="subject-difficulty">
+                    <span class="difficulty-label">Độ khó:</span>
+                    <span class="difficulty-stars">★★★★★</span>
+                </div>
+                <div class="subject-rating">Yêu thích: 96%</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
