@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thời Khóa Biểu - Hệ Thống Quản Lý Học Tập</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2d5a87;
+            --secondary: #4a90e2;
+            --accent: #00d4aa;
+            --danger: #e53e3e;
+            --warning: #dd6b20;
+            --success: #38a169;
+            --gray-50: #f7fafc;
+            --gray-100: #edf2f7;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e0;
+            --gray-400: #a0aec0;
+            --gray-500: #718096;
+            --gray-600: #4a5568;
+            --gray-700: #2d3748;
+            --gray-800: #1a202c;
+            --gray-900: #171923;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #00d4aa 0%, #00a3cc 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            border-right: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            padding: 0 20px 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--gray-700);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--gray-100);
+            color: var(--primary);
+            border-right: 3px solid var(--secondary);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            opacity: 0.7;
+        }
+
+        .filter-section {
+            padding: 16px 20px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .filter-group {
+            margin-bottom: 16px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .filter-select, .filter-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 13px;
+            background: var(--white);
+            transition: border-color 0.2s ease;
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .subject-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .subject-tag {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .subject-tag.active {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            background: var(--gray-50);
+        }
+
+        .main-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .view-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            color: var(--gray-600);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-btn.active {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .date-navigation {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--gray-300);
+            background: var(--white);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        .current-date {
+            font-weight: 600;
+            color: var(--gray-700);
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .schedule-content {
+            padding: 24px;
+        }
+
+        .week-view {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .week-header {
+            display: grid;
+            grid-template-columns: 80px repeat(7, 1fr);
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .week-day {
+            padding: 16px 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray-700);
+            border-right: 1px solid var(--gray-200);
+        }
+
+        .week-day:last-child {
+            border-right: none;
+        }
+
+        .week-day.today {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        .time-slot {
+            display: grid;
+            grid-template-columns: 80px repeat(7, 1fr);
+            border-bottom: 1px solid var(--gray-100);
+            min-height: 60px;
+        }
+
+        .time-label {
+            padding: 12px 8px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--gray-500);
+            text-align: center;
+            border-right: 1px solid var(--gray-200);
+            background: var(--gray-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .day-cell {
+            position: relative;
+            border-right: 1px solid var(--gray-100);
+            padding: 4px;
+            min-height: 60px;
+        }
+
+        .day-cell:last-child {
+            border-right: none;
+        }
+
+        .class-block {
+            position: absolute;
+            left: 2px;
+            right: 2px;
+            top: 2px;
+            bottom: 2px;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            border-left: 4px solid rgba(255,255,255,0.3);
+        }
+
+        .class-block:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-md);
+            z-index: 10;
+        }
+
+        .class-subject {
+            font-weight: 700;
+            margin-bottom: 2px;
+            font-size: 12px;
+        }
+
+        .class-room {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+
+        .class-time {
+            font-size: 9px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .math { background: linear-gradient(135deg, #e53e3e, #c53030); }
+        .physics { background: linear-gradient(135deg, #3182ce, #2c5282); }
+        .chemistry { background: linear-gradient(135deg, #38a169, #2f855a); }
+        .literature { background: linear-gradient(135deg, #805ad5, #6b46c1); }
+        .english { background: linear-gradient(135deg, #00b5d8, #0987a0); }
+        .history { background: linear-gradient(135deg, #dd6b20, #c05621); }
+        .geography { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .biology { background: linear-gradient(135deg, #48bb78, #38a169); }
+        .pe { background: linear-gradient(135deg, #ed8936, #dd6b20); }
+        .computer { background: linear-gradient(135deg, #4a5568, #2d3748); }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray-400);
+            margin-left: auto;
+        }
+
+        .modal-info {
+            display: grid;
+            gap: 12px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        .info-value {
+            color: var(--gray-800);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .week-header, .time-slot {
+                grid-template-columns: 60px repeat(7, 1fr);
+            }
+
+            .class-subject {
+                font-size: 10px;
+            }
+
+            .class-room, .class-time {
+                font-size: 9px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .week-header, .time-slot {
+                grid-template-columns: 50px repeat(5, 1fr);
+            }
+
+            .week-day:nth-child(n+7) {
+                display: none;
+            }
+
+            .day-cell:nth-child(n+7) {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--gray-200);
+            border-top: 3px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Carlender IUH</div>
+                <div class="sidebar-subtitle">Hệ thống quản lý lịch học, thời khóa biểu</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Navigation</div>
+                    <a href="#" class="nav-item active" data-view="week">
+                        <span class="nav-icon">📅</span>
+                        Lịch học tuần
+                    </a>
+                    <a href="#" class="nav-item" data-view="month">
+                        <span class="nav-icon">📆</span>
+                        Lịch học tháng
+                    </a>
+                    <a href="#" class="nav-item" data-view="list">
+                        <span class="nav-icon">📋</span>
+                        Danh sách môn học
+                    </a>
+                    <a href="#" class="nav-item" data-view="stats">
+                        <span class="nav-icon">📊</span>
+                        Thống kê
+                    </a>
+                </div>
+            </nav>
+
+            <div class="filter-section">
+                <div class="nav-section-title">Bộ lọc</div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Học kỳ</label>
+                    <select class="filter-select" id="semesterFilter">
+                        <option value="2024-1">HK I - 2024/2025</option>
+                        <option value="2024-2">HK II - 2024/2025</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Tìm kiếm môn học</label>
+                    <input type="text" class="filter-input" placeholder="Nhập tên môn học..." id="subjectSearch">
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Môn học</label>
+                    <div class="subject-tags">
+                        <button class="subject-tag math active" data-subject="math">Toán</button>
+                        <button class="subject-tag physics active" data-subject="physics">Lý</button>
+                        <button class="subject-tag chemistry active" data-subject="chemistry">Hóa</button>
+                        <button class="subject-tag literature active" data-subject="literature">Văn</button>
+                        <button class="subject-tag english active" data-subject="english">Anh</button>
+                        <button class="subject-tag history active" data-subject="history">Sử</button>
+                        <button class="subject-tag geography active" data-subject="geography">Địa</button>
+                        <button class="subject-tag biology active" data-subject="biology">Sinh</button>
+                        <button class="subject-tag pe active" data-subject="pe">TD</button>
+                        <button class="subject-tag computer active" data-subject="computer">Tin</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-content">
+            <header class="main-header">
+                <h1 class="header-title">Thời Khóa Biểu - Lớp 12A1</h1>
+                <div class="header-controls">
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="week">Tuần</button>
+                        <button class="view-btn" data-view="month">Tháng</button>
+                    </div>
+                    <div class="date-navigation">
+                        <button class="nav-btn" id="prevWeek">‹</button>
+                        <span class="current-date" id="currentDate">16 - 22 Tháng 6, 2025</span>
+                        <button class="nav-btn" id="nextWeek">›</button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="schedule-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">32</div>
+                        <div class="stat-label">Tiết học/tuần</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">Môn học</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">Ngày học/tuần</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">85%</div>
+                        <div class="stat-label">Tỷ lệ tham gia</div>
+                    </div>
+                </div>
+
+                <div class="week-view">
+                    <div class="week-header">
+                        <div class="week-day">Thời gian</div>
+                        <div class="week-day">Thứ 2</div>
+                        <div class="week-day today">Thứ 3</div>
+                        <div class="week-day">Thứ 4</div>
+                        <div class="week-day">Thứ 5</div>
+                        <div class="week-day">Thứ 6</div>
+                        <div class="week-day">Thứ 7</div>
+                        <div class="week-day">Chủ nhật</div>
+                    </div>
+
+                    <div class="time-slot">
+                        <div class="time-label">7:00<br>7:45</div>
+                        <div class="day-cell">
+                            <div class="class-block math" onclick="showClassDetails('math', 'Ca 1', 'Thứ 2', 'A101', '7:00 - 7:45', 'Nguyễn Văn A')">
+                                <div class="class-subject">Toán</div>
+                                <div class="class-room">A101</div>
+                                <div class="class-time">7:00 - 7:45</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block physics" onclick="showClassDetails('physics', 'Ca 1', 'Thứ 3', 'B201', '7:00 - 7:45', 'Trần Thị B')">
+                                <div class="class-subject">Vật Lý</div>
+                                <div class="class-room">B201</div>
+                                <div class="class-time">7:00 - 7:45</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block literature" onclick="showClassDetails('literature', 'Ca 1', 'Thứ 4', 'A102', '7:00 - 7:45', 'Lê Văn C')">
+                                <div class="class-subject">Ngữ Văn</div>
+                                <div class="class-room">A102</div>
+                                <div class="class-time">7:00 - 7:45</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block chemistry" onclick="showClassDetails('chemistry', 'Ca 1', 'Thứ 5', 'C301', '7:00 - 7:45', 'Phạm Thị D')">
+                                <div class="class-subject">Hóa Học</div>
+                                <div class="class-room">C301</div>
+                                <div class="class-time">7:00 - 7:45</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block english" onclick="showClassDetails('english', 'Ca 1', 'Thứ 6', 'A103', '7:00 - 7:45', 'Ngô Văn E')">
+                                <div class="class-subject">Tiếng Anh</div>
+                                <div class="class-room">A103</div>
+                                <div class="class-time">7:00 - 7:45</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block biology" onclick="showClassDetails('biology', 'Ca 1', 'Thứ 7', 'B301', '7:00 - 7:45', 'Vũ Thị F')">
+                                <div class="class-subject">Sinh Học</div>
+                                <div class="class-room">B301</div>
+                                <div class="class-time">7:00 - 7:45</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                    </div>
+
+                    <div class="time-slot">
+                        <div class="time-label">7:45<br>8:30</div>
+                        <div class="day-cell">
+                            <div class="class-block math" onclick="showClassDetails('math', 'Ca 2', 'Thứ 2', 'A101', '7:45 - 8:30', 'Nguyễn Văn A')">
+                                <div class="class-subject">Toán</div>
+                                <div class="class-room">A101</div>
+                                <div class="class-time">7:45 - 8:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block physics" onclick="showClassDetails('physics', 'Ca 2', 'Thứ 3', 'B202', '7:45 - 8:30', 'Trần Thị B')">
+                                <div class="class-subject">Vật Lý</div>
+                                <div class="class-room">B202</div>
+                                <div class="class-time">7:45 - 8:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block literature" onclick="showClassDetails('literature', 'Ca 2', 'Thứ 4', 'A102', '7:45 - 8:30', 'Lê Văn C')">
+                                <div class="class-subject">Ngữ Văn</div>
+                                <div class="class-room">A102</div>
+                                <div class="class-time">7:45 - 8:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block chemistry" onclick="showClassDetails('chemistry', 'Ca 2', 'Thứ 5', 'C302', '7:45 - 8:30', 'Phạm Thị D')">
+                                <div class="class-subject">Hóa Học</div>
+                                <div class="class-room">C302</div>
+                                <div class="class-time">7:45 - 8:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block english" onclick="showClassDetails('english', 'Ca 2', 'Thứ 6', 'A103', '7:45 - 8:30', 'Ngô Văn E')">
+                                <div class="class-subject">Tiếng Anh</div>
+                                <div class="class-room">A103</div>
+                                <div class="class-time">7:45 - 8:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block pe" onclick="showClassDetails('pe', 'Ca 2', 'Thứ 7', 'Sân TT', '7:45 - 8:30', 'Hoàng Thị G')">
+                                <div class="class-subject">Thể Dục</div>
+                                <div class="class-room">Sân TT</div>
+                                <div class="class-time">7:45 - 8:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                    </div>
+
+                    <div class="time-slot">
+                        <div class="time-label">8:45<br>9:30</div>
+                        <div class="day-cell">
+                            <div class="class-block english" onclick="showClassDetails('english', 'Ca 3', 'Thứ 2', 'NN1', '8:45 - 9:30', 'Ngô Văn E')">
+                                <div class="class-subject">Tiếng Anh</div>
+                                <div class="class-room">NN1</div>
+                                <div class="class-time">8:45 - 9:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block math" onclick="showClassDetails('math', 'Ca 3', 'Thứ 3', 'A101', '8:45 - 9:30', 'Nguyễn Văn A')">
+                                <div class="class-subject">Toán</div>
+                                <div class="class-room">A101</div>
+                                <div class="class-time">8:45 - 9:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block physics" onclick="showClassDetails('physics', 'Ca 3', 'Thứ 4', 'B201', '8:45 - 9:30', 'Trần Thị B')">
+                                <div class="class-subject">Vật Lý</div>
+                                <div class="class-room">B201</div>
+                                <div class="class-time">8:45 - 9:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block history" onclick="showClassDetails('history', 'Ca 3', 'Thứ 5', 'A201', '8:45 - 9:30', 'Đặng Văn I')">
+                                <div class="class-subject">Lịch Sử</div>
+                                <div class="class-room">A201</div>
+                                <div class="class-time">8:45 - 9:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block literature" onclick="showClassDetails('literature', 'Ca 3', 'Thứ 6', 'A102', '8:45 - 9:30', 'Lê Văn C')">
+                                <div class="class-subject">Ngữ Văn</div>
+                                <div class="class-room">A102</div>
+                                <div class="class-time">8:45 - 9:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block computer" onclick="showClassDetails('computer', 'Ca 3', 'Thứ 7', 'B401', '8:45 - 9:30', 'Bùi Nguyên K')">
+                                <div class="class-subject">Tin Học</div>
+                                <div class="class-room">B401</div>
+                                <div class="class-time">8:45 - 9:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                    </div>
+
+                    <div class="time-slot">
+                        <div class="time-label">9:30<br>10:15</div>
+                        <div class="day-cell">
+                            <div class="class-block biology" onclick="showClassDetails('biology', 'Ca 4', 'Thứ 2', 'B301', '9:30 - 10:15', 'Vũ Thị F')">
+                                <div class="class-subject">Sinh Học</div>
+                                <div class="class-room">B301</div>
+                                <div class="class-time">9:30 - 10:15</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block chemistry" onclick="showClassDetails('chemistry', 'Ca 4', 'Thứ 3', 'C301', '9:30 - 10:15', 'Phạm Thị D')">
+                                <div class="class-subject">Hóa Học</div>
+                                <div class="class-room">C301</div>
+                                <div class="class-time">9:30 - 10:15</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block english" onclick="showClassDetails('english', 'Ca 4', 'Thứ 4', 'NN1', '9:30 - 10:15', 'Ngô Văn E')">
+                                <div class="class-subject">Tiếng Anh</div>
+                                <div class="class-room">NN1</div>
+                                <div class="class-time">9:30 - 10:15</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block math" onclick="showClassDetails('math', 'Ca 4', 'Thứ 5', 'A101', '9:30 - 10:15', 'Nguyễn Văn A')">
+                                <div class="class-subject">Toán</div>
+                                <div class="class-room">A101</div>
+                                <div class="class-time">9:30 - 10:15</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block geography" onclick="showClassDetails('geography', 'Ca 4', 'Thứ 6', 'A202', '9:30 - 10:15', 'Trương Thị H')">
+                                <div class="class-subject">Địa Lý</div>
+                                <div class="class-room">A202</div>
+                                <div class="class-time">9:30 - 10:15</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell"></div>
+                    </div>
+
+                    <div class="time-slot">
+                        <div class="time-label">10:15<br>11:00</div>
+                        <div class="day-cell">
+                            <div class="class-block history" onclick="showClassDetails('history', 'Ca 5', 'Thứ 2', 'A201', '10:15 - 11:00', 'Đặng Văn I')">
+                                <div class="class-subject">Lịch Sử</div>
+                                <div class="class-room">A201</div>
+                                <div class="class-time">10:15 - 11:00</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block literature" onclick="showClassDetails('literature', 'Ca 5', 'Thứ 3', 'A102', '10:15 - 11:00', 'Lê Văn C')">
+                                <div class="class-subject">Ngữ Văn</div>
+                                <div class="class-room">A102</div>
+                                <div class="class-time">10:15 - 11:00</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell">
+                            <div class="class-block physics" onclick="showClassDetails('physics', 'Ca 5', 'Thứ 5', 'B201', '10:15 - 11:00', 'Trần Thị B')">
+                                <div class="class-subject">Vật Lý</div>
+                                <div class="class-room">B201</div>
+                                <div class="class-time">10:15 - 11:00</div>
+                            </div>
+                        </div>
+                        <div class="day-cell">
+                            <div class="class-block biology" onclick="showClassDetails('biology', 'Ca 5', 'Thứ 6', 'B301', '10:15 - 11:00', 'Vũ Thị F')">
+                                <div class="class-subject">Sinh Học</div>
+                                <div class="class-room">B301</div>
+                                <div class="class-time">10:15 - 11:00</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell"></div>
+                    </div>
+
+                    <div class="time-slot">
+                        <div class="time-label">13:00<br>13:45</div>
+                        <div class="day-cell">
+                            <div class="class-block chemistry" onclick="showClassDetails('chemistry', 'Ca 6', 'Thứ 2', 'C301', '13:00 - 13:45', 'Phạm Thị D')">
+                                <div class="class-subject">Hóa Học</div>
+                                <div class="class-room">C301</div>
+                                <div class="class-time">13:00 - 13:45</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell">
+                            <div class="class-block math" onclick="showClassDetails('math', 'Ca 6', 'Thứ 4', 'A101', '13:00 - 13:45', 'Nguyễn Văn A')">
+                                <div class="class-subject">Toán</div>
+                                <div class="class-room">A101</div>
+                                <div class="class-time">13:00 - 13:45</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell">
+                            <div class="class-block history" onclick="showClassDetails('history', 'Ca 6', 'Thứ 6', 'A201', '13:00 - 13:45', 'Đặng Văn I')">
+                                <div class="class-subject">Lịch Sử</div>
+                                <div class="class-room">A201</div>
+                                <div class="class-time">13:00 - 13:45</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell"></div>
+                    </div>
+
+                    <div class="time-slot">
+                        <div class="time-label">13:45<br>14:30</div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell">
+                            <div class="class-block geography" onclick="showClassDetails('geography', 'Ca 7', 'Thứ 3', 'A202', '13:45 - 14:30', 'Trương Thị H')">
+                                <div class="class-subject">Địa Lý</div>
+                                <div class="class-room">A202</div>
+                                <div class="class-time">13:45 - 14:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell">
+                            <div class="class-block english" onclick="showClassDetails('english', 'Ca 7', 'Thứ 5', 'NN1', '13:45 - 14:30', 'Ngô Văn E')">
+                                <div class="class-subject">Tiếng Anh</div>
+                                <div class="class-room">NN1</div>
+                                <div class="class-time">13:45 - 14:30</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell"></div>
+                    </div>
+
+                    <div class="time-slot">
+                        <div class="time-label">14:30<br>15:15</div>
+                        <div class="day-cell">
+                            <div class="class-block physics" onclick="showClassDetails('physics', 'Ca 8', 'Thứ 2', 'B201', '14:30 - 15:15', 'Trần Thị B')">
+                                <div class="class-subject">Vật Lý</div>
+                                <div class="class-room">B201</div>
+                                <div class="class-time">14:30 - 15:15</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell">
+                            <div class="class-block literature" onclick="showClassDetails('literature', 'Ca 8', 'Thứ 4', 'A102', '14:30 - 15:15', 'Lê Văn C')">
+                                <div class="class-subject">Ngữ Văn</div>
+                                <div class="class-room">A102</div>
+                                <div class="class-time">14:30 - 15:15</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell">
+                            <div class="class-block math" onclick="showClassDetails('math', 'Ca 8', 'Thứ 6', 'A101', '14:30 - 15:15', 'Nguyễn Văn A')">
+                                <div class="class-subject">Toán</div>
+                                <div class="class-room">A101</div>
+                                <div class="class-time">14:30 - 15:15</div>
+                            </div>
+                        </div>
+                        <div class="day-cell"></div>
+                        <div class="day-cell"></div>
+                    </div>
+                </div>
+
+                <div class="modal-overlay" id="classModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="modalTitle">Chi tiết lớp học</h2>
+                            <button class="modal-close" onclick="closeModal()">×</button>
+                        </div>
+                        <div class="modal-info">
+                            <div class="info-row">
+                                <span class="info-label">Môn học</span>
+                                <span class="info-value" id="modalSubject"></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Phòng học</span>
+                                <span class="info-value" id="modalRoom"></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Thời gian</span>
+                                <span class="info-value" id="modalTime"></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Ngày</span>
+                                <span class="info-value" id="modalDay"></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Giảng viên</span>
+                                <span class="info-value" id="modalTeacher"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function formatDate(date) {
+            return date.toLocaleDateString('vi-VN', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
+        function getWeekRange(date) {
+            const start = new Date(date);
+            start.setDate(date.getDate() - date.getDay() + 1);
+            const end = new Date(start);
+            end.setDate(start.getDate() + 6);
+            return `${formatDate(start).split(' ')[0]} - ${formatDate(end).split(' ')[0]} Tháng ${formatDate(start).split(' ')[1]}, ${formatDate(start).split(' ')[2]}`;
+        }
+
+        let currentDate = new Date('2025-06-17');
+
+        function updateDateDisplay() {
+            document.getElementById('currentDate').textContent = getWeekRange(currentDate);
+        }
+
+        document.getElementById('prevWeek').addEventListener('click', () => {
+            currentDate.setDate(currentDate.getDate() - 7);
+            updateDateDisplay();
+            renderSchedule();
+        });
+
+        document.getElementById('nextWeek').addEventListener('click', () => {
+            currentDate.setDate(currentDate.getDate() + 7);
+            updateDateDisplay();
+            renderSchedule();
+        });
+
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const view = btn.getAttribute('data-view');
+                if (view === 'month') {
+                    document.querySelector('.week-view').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                    setTimeout(() => {
+                        document.querySelector('.week-view').innerHTML = '<p>Chế độ xem tháng đang được phát triển...</p>';
+                    }, 1000);
+                } else {
+                    renderSchedule();
+                }
+            });
+        });
+
+        document.getElementById('semesterFilter').addEventListener('change', () => {
+            renderSchedule();
+        });
+
+        document.getElementById('subjectSearch').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.class-block').forEach(block => {
+                const subject = block.querySelector('.class-subject').textContent.toLowerCase();
+                block.style.display = subject.includes(searchTerm) ? 'flex' : 'none';
+            });
+        });
+
+        document.querySelectorAll('.subject-tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('active');
+                filterScheduleByTags();
+            });
+        });
+
+        function filterScheduleByTags() {
+            const activeTags = Array.from(document.querySelectorAll('.subject-tag.active')).map(tag => tag.getAttribute('data-subject'));
+            document.querySelectorAll('.class-block').forEach(block => {
+                const subject = block.classList[1];
+                block.style.display = activeTags.includes(subject) ? 'flex' : 'none';
+            });
+        }
+
+        function showClassDetails(subject, ca, day, room, time, teacher) {
+            const subjects = {
+                math: 'Toán', physics: 'Vật Lý', chemistry: 'Hóa Học', literature: 'Ngữ Văn',
+                english: 'Tiếng Anh', history: 'Lịch Sử', geography: 'Địa Lý', biology: 'Sinh Học',
+                pe: 'Thể Dục', computer: 'Tin Học'
+            };
+            document.getElementById('modalTitle').textContent = `Chi tiết lớp học - ${subjects[subject]}`;
+            document.getElementById('modalSubject').textContent = subjects[subject];
+            document.getElementById('modalRoom').textContent = room;
+            document.getElementById('modalTime').textContent = time;
+            document.getElementById('modalDay').textContent = day;
+            document.getElementById('modalTeacher').textContent = teacher;
+            document.getElementById('classModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('classModal').style.display = 'none';
+        }
+
+        function renderSchedule() {
+            updateDateDisplay();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        updateDateDisplay();
+    </script>
+</body>
+</html>
