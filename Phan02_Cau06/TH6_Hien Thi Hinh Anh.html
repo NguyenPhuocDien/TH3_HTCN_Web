@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery Ảnh và Mô Tả</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-light: #ecf0f1;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --shadow: 0 8px 25px rgba(0,0,0,0.1);
+            --border-radius: 15px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #d5dbdb 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        .media-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .media-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .media-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .image-section {
+            flex: 1;
+            max-width: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .image-section:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            opacity: 0;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-section:hover .image-overlay {
+            opacity: 0.8;
+        }
+
+        .overlay-text {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .description-section {
+            flex: 1;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .category {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .title {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .description {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-info {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, var(--primary-color), #5dade2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            align-self: flex-start;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .grid-item {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .grid-content {
+            padding: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .media-item {
+                flex-direction: column !important;
+            }
+
+            .media-item:nth-child(even) {
+                flex-direction: column !important;
+            }
+
+            .image-section {
+                max-width: 100%;
+            }
+
+            .image-section img {
+                height: 250px;
+            }
+
+            .description-section {
+                padding: 1.5rem;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .meta-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .action-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .media-item {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .media-item:nth-child(2) { animation-delay: 0.1s; }
+        .media-item:nth-child(3) { animation-delay: 0.2s; }
+        .media-item:nth-child(4) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gallery Ảnh và Mô Tả</h1>
+        <div class="media-item">
+            <div class="image-section">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop" alt="Mountain Landscape">
+                <div class="image-overlay">
+                    <div class="overlay-text">Khám Phá</div>
+                </div>
+            </div>
+            <div class="description-section">
+                <div class="category">Du Lịch</div>
+                <h2 class="title">Thiên Nhiên Hùng Vĩ</h2>
+                <p class="description">
+                    Khám phá vẻ đẹp tuyệt vời của những dãy núi hùng vĩ, nơi thiên nhiên thể hiện sức mạnh và vẻ đẹp nguyên sơ. Mỗi chuyến hành trình mang đến những trải nghiệm đáng nhớ và khoảnh khắc bình yên tuyệt vời.
+                </p>
+                <div class="meta-info">
+                    <span class="meta-tag">📍 Alps</span>
+                    <span class="meta-tag">📅 2024</span>
+                    <span class="meta-tag">⭐ 4.9/5</span>
+                </div>
+                <button class="action-btn">Xem Chi Tiết</button>
+            </div>
+        </div>
+
+        <div class="media-item">
+            <div class="image-section">
+                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop" alt="Modern Architecture">
+                <div class="image-overlay">
+                    <div class="overlay-text">Khám Phá</div>
+                </div>
+            </div>
+            <div class="description-section">
+                <div class="category">Kiến Trúc</div>
+                <h2 class="title">Kiến Trúc Hiện Đại</h2>
+                <p class="description">
+                    Những công trình kiến trúc hiện đại với thiết kế độc đáo, thể hiện sự sáng tạo và tầm nhìn của con người. Sự kết hợp hoàn hảo giữa nghệ thuật và công nghệ tạo nên những kiệt tác kiến trúc.
+                </p>
+                <div class="meta-info">
+                    <span class="meta-tag">🏢 Skyscraper</span>
+                    <span class="meta-tag">🎨 Modern</span>
+                    <span class="meta-tag">💎 Premium</span>
+                </div>
+                <button class="action-btn">Tìm Hiểu Thêm</button>
+            </div>
+        </div>
+
+        <div class="media-item">
+            <div class="image-section">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&h=300&fit=crop" alt="Ocean View">
+                <div class="image-overlay">
+                    <div class="overlay-text">Khám Phá</div>
+                </div>
+            </div>
+            <div class="description-section">
+                <div class="category">Biển Cả</div>
+                <h2 class="title">Bình Minh Trên Biển</h2>
+                <p class="description">
+                    Cảnh tượng bình minh trên mặt biển bao la, khi ánh nắng đầu tiên chiếu rọi xuống làn nước trong xanh. Những khoảnh khắc yên bình này mang đến cảm giác thư thái và sự kết nối với thiên nhiên.
+                </p>
+                <div class="meta-info">
+                    <span class="meta-tag">🌅 Sunrise</span>
+                    <span class="meta-tag">🌊 Ocean</span>
+                    <span class="meta-tag">🔥 Hot</span>
+                </div>
+                <button class="action-btn">Khám Phá Ngay</button>
+            </div>
+        </div>
+
+        <h2 style="text-align: center; margin: 3rem 0 2rem; color: var(--secondary-color);">Grid Layout Alternative</h2>
+        <div class="grid-container">
+            <div class="grid-item">
+                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=200&fit=crop" alt="Forest">
+                <div class="grid-content">
+                    <div class="category">Rừng Xanh</div>
+                    <h3 class="title" style="font-size: 1.3rem;">Khu Rừng Nguyên Sinh</h3>
+                    <p class="description">Những cánh rừng xanh ngát với hệ sinh thái đa dạng...</p>
+                    <div class="meta-info">
+                        <span class="meta-tag">🌲 Forest</span>
+                        <span class="meta-tag">🦋 Wildlife</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-item">
+                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&h=200&fit=crop" alt="City">
+                <div class="grid-content">
+                    <div class="category">Thành Phố</div>
+                    <h3 class="title" style="font-size: 1.3rem;">Đô Thị Hiện Đại</h3>
+                    <p class="description">Nhịp sống sôi động của thành phố với những tòa nhà cao tầng...</p>
+                    <div class="meta-info">
+                        <span class="meta-tag">🏙️ Urban</span>
+                        <span class="meta-tag">💡 Innovation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-item">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop" alt="Desert">
+                <div class="grid-content">
+                    <div class="category">Sa Mạc</div>
+                    <h3 class="title" style="font-size: 1.3rem;">Cồn Cát Vàng</h3>
+                    <p class="description">Vẻ đẹp huyền bí của sa mạc với những cồn cát vàng...</p>
+                    <div class="meta-info">
+                        <span class="meta-tag">🏜️ Desert</span>
+                        <span class="meta-tag">🌅 Adventure</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+                console.log('Button clicked:', this.textContent);
+            });
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.media-item, .grid-item').forEach(item => {
+            observer.observe(item);
+        });
+    </script>
+</body>
+</html>
