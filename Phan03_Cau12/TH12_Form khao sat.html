@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khảo Sát Ý Kiến Chuyên Nghiệp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --dark: #1b263b;
+            --light: #f8f9fa;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .survey-container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .survey-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .survey-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+        }
+        
+        .survey-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+        
+        .survey-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .survey-progress {
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            margin-top: 1.5rem;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 65%;
+            background-color: white;
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+        
+        .survey-body {
+            padding: 2.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--dark);
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-light);
+            font-size: 1.1rem;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            color: var(--dark);
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+            padding: 1rem;
+        }
+        
+        .option-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .radio-option,
+        .checkbox-option {
+            position: relative;
+        }
+        
+        .radio-option input,
+        .checkbox-option input {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .radio-option label,
+        .checkbox-option label {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem 1rem 3rem;
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .radio-option label::before,
+        .checkbox-option label::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #adb5bd;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .checkbox-option label::before {
+            border-radius: 4px;
+        }
+        
+        .radio-option label::after,
+        .checkbox-option label::after {
+            content: '';
+            position: absolute;
+            left: 1.25rem;
+            top: 1.25rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: var(--transition);
+        }
+        
+        .checkbox-option label::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            background: transparent;
+            color: white;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0);
+        }
+        
+        .radio-option input:checked + label,
+        .checkbox-option input:checked + label {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .radio-option input:checked + label::before {
+            border-color: var(--primary);
+            background-color: var(--primary);
+        }
+        
+        .radio-option input:checked + label::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .checkbox-option input:checked + label::before {
+            border-color: var(--primary);
+            background-color: var(--primary);
+        }
+        
+        .checkbox-option input:checked + label::after {
+            transform: scale(1);
+        }
+        
+        .rating-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        
+        .rating-item {
+            text-align: center;
+            flex: 1;
+            max-width: 80px;
+        }
+        
+        .rating-input {
+            display: none;
+        }
+        
+        .rating-label {
+            display: block;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .rating-icon {
+            font-size: 2rem;
+            color: #e9ecef;
+            transition: var(--transition);
+        }
+        
+        .rating-text {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #adb5bd;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .rating-input:checked ~ .rating-label .rating-icon {
+            color: var(--warning);
+            transform: scale(1.1);
+        }
+        
+        .rating-input:checked ~ .rating-label .rating-text {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        @media (max-width: 768px) {
+            .survey-body {
+                padding: 1.5rem;
+            }
+            
+            .option-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .rating-group {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .rating-item {
+                flex: 0 0 calc(33.333% - 0.5rem);
+                max-width: calc(33.333% - 0.5rem);
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="survey-container">
+        <div class="survey-header">
+            <h1><i class="fas fa-comment-alt"></i> KHẢO SÁT Ý KIẾN</h1>
+            <p>Chúng tôi luôn trân trọng những đóng góp của bạn để cải thiện chất lượng dịch vụ</p>
+            <div class="survey-progress">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+        
+        <div class="survey-body">
+            <form>
+                <div class="form-group">
+                    <h2><i class="fas fa-user"></i> Thông tin cá nhân</h2>
+                    <p class="subtitle">Vui lòng cung cấp một số thông tin cơ bản</p>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="name" name="name" placeholder="Họ và tên" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="email" name="email" placeholder="Địa chỉ email" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="tel" id="phone" name="phone" placeholder="Số điện thoại (tuỳ chọn)">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h2><i class="fas fa-venus-mars"></i> Giới tính</h2>
+                    <p class="subtitle">Vui lòng chọn giới tính của bạn</p>
+                    
+                    <div class="option-group">
+                        <div class="radio-option">
+                            <input type="radio" id="male" name="gender" value="male" required>
+                            <label for="male">Nam</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="female" name="gender" value="female">
+                            <label for="female">Nữ</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="other" name="gender" value="other">
+                            <label for="other">Khác</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h2><i class="fas fa-heart"></i> Sở thích của bạn</h2>
+                    <p class="subtitle">Chọn tất cả các mục phù hợp</p>
+                    
+                    <div class="option-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="travel" name="interest" value="travel">
+                            <label for="travel">Du lịch</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="reading" name="interest" value="reading">
+                            <label for="reading">Đọc sách</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="sports" name="interest" value="sports">
+                            <label for="sports">Thể thao</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="music" name="interest" value="music">
+                            <label for="music">Âm nhạc</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="tech" name="interest" value="tech">
+                            <label for="tech">Công nghệ</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="cooking" name="interest" value="cooking">
+                            <label for="cooking">Nấu ăn</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h2><i class="fas fa-star"></i> Đánh giá trải nghiệm</h2>
+                    <p class="subtitle">Bạn hài lòng như thế nào với dịch vụ của chúng tôi?</p>
+                    
+                    <div class="rating-group">
+                        <div class="rating-item">
+                            <input type="radio" id="rating-1" name="rating" value="1" class="rating-input">
+                            <label for="rating-1" class="rating-label">
+                                <i class="fas fa-frown rating-icon"></i>
+                                <span class="rating-text">Rất tệ</span>
+                            </label>
+                        </div>
+                        <div class="rating-item">
+                            <input type="radio" id="rating-2" name="rating" value="2" class="rating-input">
+                            <label for="rating-2" class="rating-label">
+                                <i class="fas fa-meh rating-icon"></i>
+                                <span class="rating-text">Không hài lòng</span>
+                            </label>
+                        </div>
+                        <div class="rating-item">
+                            <input type="radio" id="rating-3" name="rating" value="3" class="rating-input">
+                            <label for="rating-3" class="rating-label">
+                                <i class="fas fa-meh rating-icon"></i>
+                                <span class="rating-text">Bình thường</span>
+                            </label>
+                        </div>
+                        <div class="rating-item">
+                            <input type="radio" id="rating-4" name="rating" value="4" class="rating-input">
+                            <label for="rating-4" class="rating-label">
+                                <i class="fas fa-smile rating-icon"></i>
+                                <span class="rating-text">Hài lòng</span>
+                            </label>
+                        </div>
+                        <div class="rating-item">
+                            <input type="radio" id="rating-5" name="rating" value="5" class="rating-input">
+                            <label for="rating-5" class="rating-label">
+                                <i class="fas fa-grin-stars rating-icon"></i>
+                                <span class="rating-text">Rất hài lòng</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h2><i class="fas fa-comment-dots"></i> Ý kiến đóng góp</h2>
+                    <p class="subtitle">Mọi ý kiến của bạn đều rất quý giá với chúng tôi</p>
+                    
+                    <textarea id="feedback" name="feedback" placeholder="Xin vui lòng chia sẻ chi tiết ý kiến của bạn..."></textarea>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Gửi khảo sát <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
