@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Card - CSS Nâng Cao</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --shadow-hover: rgba(0, 0, 0, 0.2);
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .video-card {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px var(--shadow-color);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: var(--transition);
+            transform-origin: left;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px var(--shadow-hover);
+        }
+
+        .video-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-header {
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .card-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; 
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .video-wrapper:hover iframe {
+            transform: scale(1.02);
+        }
+
+        
+        .video-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .video-description {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .video-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .stat-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .card-actions {
+            padding: 0 20px 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--light-color);
+            color: var(--dark-color);
+            border: 2px solid #bdc3c7;
+        }
+
+        .btn-secondary:hover {
+            background: #d5dbdb;
+            border-color: #95a5a6;
+        }
+
+        .video-card.featured {
+            grid-column: 1 / -1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .video-card.featured .card-header {
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+        }
+
+        @media (max-width: 768px) {
+            .video-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 0 10px;
+            }
+            
+            .video-card.featured {
+                grid-column: 1;
+            }
+            
+            .card-header {
+                padding: 15px;
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .card-title {
+                font-size: 1.2em;
+            }
+            
+            .video-info {
+                padding: 15px;
+            }
+            
+            .card-actions {
+                padding: 0 15px 15px;
+                flex-direction: column;
+            }
+            
+            .video-stats {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .video-container {
+                gap: 15px;
+            }
+            
+            .card-title {
+                font-size: 1.1em;
+            }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .loading {
+            animation: pulse 2s infinite;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            }
+            
+            .video-card {
+                background: #34495e;
+                color: white;
+            }
+            
+            .video-description {
+                color: #bdc3c7;
+            }
+            
+            .stat-item {
+                color: #95a5a6;
+            }
+            
+            .btn-secondary {
+                background: #2c3e50;
+                color: white;
+                border-color: #34495e;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <div class="video-card featured">
+            <div class="card-header">
+                <h2 class="card-title">🌟 Hướng dẫn CSS Animation từ A-Z</h2>
+                <svg class="card-icon" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+            </div>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/HZHHBwzmJLk" 
+                        title="Hướng dẫn CSS Animation từ A-Z" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-info">
+                <p class="video-description">
+                    Video hướng dẫn đầy đủ về CSS Animation từ cơ bản đến nâng cao. Học cách tạo các hiệu ứng chuyển động đẹp mắt chỉ với CSS.
+                </p>
+                <div class="video-stats">
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24">
+                            <path d="M14,6l-4.22,7.63L11,15h2.4L14,6z M9,4h6v2H9V4z M9,18H15v2H9V18z"/>
+                        </svg>
+                        1.5M lượt xem
+                    </div>
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24">
+                            <path d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z"/>
+                        </svg>
+                        35K likes
+                    </div>
+                </div>
+            </div>
+            <div class="card-actions">
+                <a href="https://www.youtube.com/watch?v=HZHHBwzmJLk" class="btn btn-primary">Xem trên YouTube</a>
+                <button class="btn btn-secondary">Chia sẻ</button>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="card-header">
+                <h3 class="card-title">CSS Flexbox Tutorial</h3>
+                <svg class="card-icon" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                </svg>
+            </div>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/JJSoEo8JSnc" 
+                        title="Flexbox CSS Tutorial" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-info">
+                <p class="video-description">
+                    Học cách sử dụng CSS Flexbox để tạo layout linh hoạt và responsive.
+                </p>
+                <div class="video-stats">
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24">
+                            <path d="M14,6l-4.22,7.63L11,15h2.4L14,6z M9,4h6v2H9V4z M9,18H15v2H9V18z"/>
+                        </svg>
+                        850K views
+                    </div>
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24">
+                            <path d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z"/>
+                        </svg>
+                        18K likes
+                    </div>
+                </div>
+            </div>
+            <div class="card-actions">
+                <a href="https://www.youtube.com/watch?v=JJSoEo8JSnc" class="btn btn-primary">Xem ngay</a>
+                <button class="btn btn-secondary">Lưu</button>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="card-header">
+                <h3 class="card-title">CSS Grid Layout</h3>
+                <svg class="card-icon" viewBox="0 0 24 24">
+                    <path d="M10,4V8H14V4H10M16,4V8H20V4H16M16,10V14H20V10H16M16,16V20H20V16H16M14,20V16H10V20H14M8,20V16H4V20H8M4,14V10H8V14H4M4,8V4H8V8H4M10,14H14V10H10V14M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4C2.89,22 2,21.1 2,20V4A2,2 0 0,1 4,2Z"/>
+                </svg>
+            </div>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/EFafSYg-PKU" 
+                        title="CSS Grid Tutorial" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-info">
+                <p class="video-description">
+                    Khám phá sức mạnh của CSS Grid để tạo layout phức tạp một cách dễ dàng.
+                </p>
+                <div class="video-stats">
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24">
+                            <path d="M14,6l-4.22,7.63L11,15h2.4L14,6z M9,4h6v2H9V4z M9,18H15v2H9V18z"/>
+                        </svg>
+                        620K views
+                    </div>
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24">
+                            <path d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z"/>
+                        </svg>
+                        12K likes
+                    </div>
+                </div>
+            </div>
+            <div class="card-actions">
+                <a href="https://www.youtube.com/watch?v=EFafSYg-PKU" class="btn btn-primary">Học ngay</a>
+                <button class="btn btn-secondary">Bookmark</button>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="card-header">
+                <h3 class="card-title">Responsive Design</h3>
+                <svg class="card-icon" viewBox="0 0 24 24">
+                    <path d="M17,19H7V5H17M17,1H7C5.89,1 5,1.89 5,3V21C5,22.1 5.9,23 7,23H17C18.1,23 19,22.1 19,21V3C19,1.89 18.1,1 17,1Z"/>
+                </svg>
+            </div>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/VQraviuwbzU" 
+                        title="Responsive Web Design Tutorial" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-info">
+                <p class="video-description">
+                    Tạo website responsive với media queries và các kỹ thuật CSS hiện đại.
+                </p>
+                <div class="video-stats">
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24">
+                            <path d="M14,6l-4.22,7.63L11,15h2.4L14,6z M9,4h6v2H9V4z M9,18H15v2H9V18z"/>
+                        </svg>
+                        1.1M views
+                    </div>
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24">
+                            <path d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z"/>
+                        </svg>
+                        32K likes
+                    </div>
+                </div>
+            </div>
+            <div class="card-actions">
+                <a href="https://www.youtube.com/watch?v=VQraviuwbzU" class="btn btn-primary">Xem chi tiết</a>
+                <button class="btn btn-secondary">Thêm vào playlist</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.video-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (this.classList.contains('btn-secondary')) {
+                        e.preventDefault();
+                        this.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
