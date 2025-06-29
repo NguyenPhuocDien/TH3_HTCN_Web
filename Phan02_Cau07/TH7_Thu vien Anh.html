@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư viện ảnh CSS Grid</title>
+    <style>
+        :root {
+            --main-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #ecf0f1;
+            --dark-bg: #34495e;
+            --text-color: #2c3e50;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.2);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #bdc3c7 100%);
+            min-height: 100vh;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--main-color) 0%, var(--secondary-color) 100%);
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            color: var(--text-color);
+            border: 2px solid var(--main-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--main-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+            background: white;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(52, 152, 219, 0.9), rgba(231, 76, 60, 0.9));
+            opacity: 0;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .overlay h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .overlay p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            transform: translateY(20px);
+            transition: var(--transition);
+            transition-delay: 0.1s;
+        }
+
+        .gallery-item:hover .overlay h3,
+        .gallery-item:hover .overlay p {
+            transform: translateY(0);
+        }
+
+        .badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 2;
+            box-shadow: var(--shadow-light);
+        }
+
+        .loading {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--light-bg);
+            border-top: 4px solid var(--main-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .filter-buttons {
+                gap: 0.5rem;
+            }
+            
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .gallery-item img {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .container {
+                padding: 0 0.5rem;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .filter-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .filter-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        .stats {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-light);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--main-color);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        .footer {
+            background: var(--dark-bg);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Thư viện ảnh CSS Grid</h1>
+            <p>Responsive Gallery với CSS Grid và Flexbox</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number" id="totalImages">12</span>
+                <div class="stat-label">Tổng ảnh</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">4</span>
+                <div class="stat-label">Danh mục</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">3</span>
+                <div class="stat-label">Cột (Desktop)</div>
+            </div>
+        </div>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">Tất cả</button>
+            <button class="filter-btn" data-filter="nature">Thiên nhiên</button>
+            <button class="filter-btn" data-filter="city">Thành phố</button>
+            <button class="filter-btn" data-filter="people">Con người</button>
+            <button class="filter-btn" data-filter="art">Nghệ thuật</button>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <div class="gallery-item" data-category="nature">
+                <div class="badge">Mới</div>
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Mountain Landscape">
+                <div class="overlay">
+                    <h3>Phong cảnh núi</h3>
+                    <p>Cảnh đẹp hùng vĩ của dãy núi Alps với những đỉnh cao phủ tuyết trắng</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="nature">
+                <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Forest Path">
+                <div class="overlay">
+                    <h3>Con đường rừng</h3>
+                    <p>Lối mòn thơ mộng xuyên qua khu rừng cổ thụ xanh mướt</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="nature">
+                <img src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Lake Sunset">
+                <div class="overlay">
+                    <h3>Hoàng hôn hồ nước</h3>
+                    <p>Cảnh hoàng hôn tuyệt đẹp bên hồ nước trong xanh</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="city">
+                <div class="badge">Hot</div>
+                <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="City Skyline">
+                <div class="overlay">
+                    <h3>Đường chân trời thành phố</h3>
+                    <p>Khung cảnh thành phố hiện đại với những tòa nhà chọc trời</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="city">
+                <img src="https://images.unsplash.com/photo-1514565131-fce0801e5785?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="City Street">
+                <div class="overlay">
+                    <h3>Phố đêm</h3>
+                    <p>Con phố nhộn nhịp về đêm với ánh đèn rực rỡ</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="city">
+                <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Bridge">
+                <div class="overlay">
+                    <h3>Cầu thành phố</h3>
+                    <p>Cây cầu kiến trúc độc đáo bắc qua sông trong thành phố</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="people">
+                <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Portrait">
+                <div class="overlay">
+                    <h3>Chân dung</h3>
+                    <p>Bức chân dung nghệ thuật với ánh sáng tự nhiên</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="people">
+                <div class="badge">Trending</div>
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Street Photography">
+                <div class="overlay">
+                    <h3>Nhiếp ảnh đường phố</h3>
+                    <p>Khoảnh khắc đời thường được ghi lại một cách tự nhiên</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="people">
+                <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Group Photo">
+                <div class="overlay">
+                    <h3>Ảnh nhóm</h3>
+                    <p>Khoảnh khắc vui vẻ của nhóm bạn bên bờ biển</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="art">
+                <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Abstract Art">
+                <div class="overlay">
+                    <h3>Nghệ thuật trừu tượng</h3>
+                    <p>Tác phẩm nghệ thuật đương đại với màu sắc rực rỡ</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="art">
+                <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Sculpture">
+                <div class="overlay">
+                    <h3>Điêu khắc</h3>
+                    <p>Tác phẩm điêu khắc hiện đại trong không gian mở</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="art">
+                <div class="badge">Mới</div>
+                <img src="https://images.unsplash.com/photo-1571115764595-644a1f56a55c?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=300&q=80" alt="Street Art">
+                <div class="overlay">
+                    <h3>Street Art</h3>
+                    <p>Tác phẩm graffiti nghệ thuật trên tường phố</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>&copy; 2024 Thư viện ảnh CSS Grid. Được thiết kế với ❤️ và CSS hiện đại.</p>
+        </div>
+    </div>
+
+    <script>
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const loading = document.getElementById('loading');
+        const gallery = document.getElementById('gallery');
+        const totalImagesSpan = document.getElementById('totalImages');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                const filterValue = button.getAttribute('data-filter');
+                showLoading();
+                setTimeout(() => {
+                    filterItems(filterValue);
+                    hideLoading();
+                }, 500);
+            });
+        });
+
+        function filterItems(filter) {
+            let visibleCount = 0;
+            
+            galleryItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                
+                if (filter === 'all' || category === filter) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeInUp 0.6s ease forwards';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            totalImagesSpan.textContent = visibleCount;
+        }
+
+        function showLoading() {
+            loading.style.display = 'flex';
+            gallery.style.opacity = '0.5';
+        }
+
+        function hideLoading() {
+            loading.style.display = 'none';
+            gallery.style.opacity = '1';
+        }
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                0% {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes pulse {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+            }
+            
+            .gallery-item:hover .badge {
+                animation: pulse 0.6s ease-in-out;
+            }
+        `;
+        document.head.appendChild(style);
+
+        window.addEventListener('load', () => {
+            galleryItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.animation = `fadeInUp 0.6s ease forwards`;
+                }, index * 100);
+            });
+        });
+
+        function adjustGrid() {
+            const gallery = document.getElementById('gallery');
+            const width = window.innerWidth;
+            
+            if (width <= 480) {
+                gallery.style.gridTemplateColumns = '1fr';
+            } else if (width <= 768) {
+                gallery.style.gridTemplateColumns = 'repeat(2, 1fr)';
+            } else {
+                gallery.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            }
+        }
+
+        window.addEventListener('resize', adjustGrid);
+        
+        adjustGrid();
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                const title = item.querySelector('.overlay h3').textContent;
+                
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.9);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                    cursor: pointer;
+                `;
+                
+                const modalImg = document.createElement('img');
+                modalImg.src = img.src;
+                modalImg.style.cssText = `
+                    max-width: 90%;
+                    max-height: 90%;
+                    border-radius: 12px;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                `;
+                
+                modal.appendChild(modalImg);
+                document.body.appendChild(modal);
+                
+                modal.addEventListener('click', () => {
+                    document.body.removeChild(modal);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
