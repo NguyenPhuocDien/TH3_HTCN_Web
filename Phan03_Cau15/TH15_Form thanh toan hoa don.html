@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Thanh Toán | BrandName</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
+            --secondary: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --light: #f8fafc;
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+            --box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fAZ9hiA.woff2) format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 600;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hiA.woff2) format('woff2');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.5;
+            font-weight: 400;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .payment-system {
+            width: 100%;
+            max-width: 1400px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            min-height: 800px;
+        }
+
+        .payment-header {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.75rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .logo-icon {
+            font-size: 1.75rem;
+            color: white;
+        }
+
+        .payment-steps {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .step-number {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 1;
+        }
+
+        .step.active .step-number {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+
+        .step-text {
+            font-weight: 500;
+        }
+
+        .step-connector {
+            position: absolute;
+            left: 2.75rem;
+            width: 1.5rem;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-section {
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--darker);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .section-subtitle {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--darker);
+        }
+
+        .form-label.required::after {
+            content: '*';
+            color: var(--danger);
+            margin-left: 0.25rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1.25rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: white;
+            color: var(--dark);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: var(--gray);
+            opacity: 0.6;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-card {
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--box-shadow-md);
+        }
+
+        .payment-card.active {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .payment-card.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 30px 30px 0;
+            border-color: transparent var(--primary) transparent transparent;
+        }
+
+        .payment-card.active::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .payment-icon {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: var(--border-radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .payment-icon.cod { background: linear-gradient(135deg, #10b981, #059669); }
+        .payment-icon.bank { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .payment-icon.momo { background: linear-gradient(135deg, #ec4899, #db2777); }
+        .payment-icon.credit { background: linear-gradient(135deg, #f97316, #ea580c); }
+
+        .payment-info {
+            flex-grow: 1;
+        }
+
+        .payment-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--darker);
+        }
+
+        .payment-description {
+            font-size: 0.85rem;
+            color: var(--gray);
+            line-height: 1.4;
+        }
+
+        .order-summary {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--light-gray);
+        }
+
+        .summary-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            color: var(--darker);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .order-items {
+            margin-bottom: 1rem;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed var(--light-gray);
+            font-size: 0.95rem;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            color: var(--gray);
+        }
+
+        .item-value {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .order-total {
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            border-top: 2px solid var(--primary);
+            color: var(--darker);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            text-align: center;
+            gap: 0.75rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+        }
+
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .badge i {
+            font-size: 1rem;
+            color: var(--success);
+        }
+
+        .card-preview {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .card-preview::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-type {
+            font-weight: 500;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .card-chip {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .card-number {
+            font-family: 'Courier New', monospace;
+            font-size: 1.25rem;
+            letter-spacing: 0.1rem;
+            margin-bottom: 1.5rem;
+            word-spacing: 0.5rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .card-name {
+            text-transform: uppercase;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .card-expiry {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 1200px) {
+            .payment-system {
+                grid-template-columns: 1fr;
+                max-width: 800px;
+            }
+            
+            .payment-header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+                padding: 1.5rem;
+            }
+            
+            .payment-steps {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .form-row, .payment-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .payment-header {
+                padding: 1.25rem;
+            }
+            
+            .form-section {
+                padding: 1.5rem;
+            }
+            
+            .step-text {
+                display: none;
+            }
+            
+            .step-connector {
+                width: 0.75rem;
+                left: 2.25rem;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-section {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .order-summary {
+            animation: fadeInUp 0.6s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        .btn {
+            animation: fadeInUp 0.6s ease 0.4s forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-system">
+        <div class="payment-header">
+            <div class="brand-logo">
+                <span>Store Payment</span>
+            </div>
+            
+            <div class="payment-steps">
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <span class="step-text">Thông tin</span>
+                    <div class="step-connector"></div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <span class="step-text">Thanh toán</span>
+                    <div class="step-connector"></div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <span class="step-text">Hoàn tất</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-truck"></i>
+                    Thông tin giao hàng
+                </h2>
+                <p class="section-subtitle">Vui lòng nhập đầy đủ thông tin nhận hàng</p>
+            </div>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="fullname" class="form-label required">Họ và tên</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="fullname" class="form-control" placeholder="Nguyễn Phước Điền
+                        " required>
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone" class="form-label required">Số điện thoại</label>
+                        <div class="input-wrapper">
+                            <input type="tel" id="phone" class="form-control" placeholder="0987 654 321" required>
+                            <i class="fas fa-phone input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" class="form-control" placeholder="npd.iuh@gmail.com">
+                            <i class="fas fa-envelope input-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address" class="form-label required">Địa chỉ</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="address" class="form-control" placeholder="Số nhà, đường, phường/xã" required>
+                        <i class="fas fa-map-marker-alt input-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city" class="form-label required">Tỉnh/Thành phố</label>
+                        <select id="city" class="form-control" required>
+                            <option value="">Chọn tỉnh/thành phố</option>
+                            <option value="hanoi">Hà Nội</option>
+                            <option value="hcm">TP. Hồ Chí Minh</option>
+                            <option value="danang">Đà Nẵng</option>
+                            <option value="haiphong">Hải Phòng</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="district" class="form-label required">Quận/Huyện</label>
+                        <select id="district" class="form-control" required>
+                            <option value="">Chọn quận/huyện</option>
+                            <option value="q1">Quận 1</option>
+                            <option value="q2">Quận 2</option>
+                            <option value="q3">Quận 3</option>
+                            <option value="thanhxuan">Thanh Xuân</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="note" class="form-label">Ghi chú giao hàng</label>
+                    <textarea id="note" class="form-control" placeholder="Ví dụ: Giao giờ hành chính, gọi điện trước khi giao..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    Phương thức thanh toán
+                </h2>
+                <p class="section-subtitle">Chọn hình thức thanh toán phù hợp</p>
+            </div>
+            
+            <div class="payment-options">
+                <div class="payment-card active" data-method="cod">
+                    <div class="payment-icon cod">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-title">Thanh toán khi nhận hàng</div>
+                        <div class="payment-description">COD - Nhận hàng kiểm tra trước khi thanh toán</div>
+                    </div>
+                    <input type="radio" name="payment" id="cod" checked>
+                </div>
+                
+                <div class="payment-card" data-method="bank">
+                    <div class="payment-icon bank">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-title">Chuyển khoản ngân hàng</div>
+                        <div class="payment-description">Chuyển khoản qua tài khoản ngân hàng</div>
+                    </div>
+                    <input type="radio" name="payment" id="bank">
+                </div>
+                
+                <div class="payment-card" data-method="momo">
+                    <div class="payment-icon momo">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-title">Ví điện tử MoMo</div>
+                        <div class="payment-description">Thanh toán nhanh qua ứng dụng MoMo</div>
+                    </div>
+                    <input type="radio" name="payment" id="momo">
+                </div>
+                
+                <div class="payment-card" data-method="credit">
+                    <div class="payment-icon credit">
+                        <i class="far fa-credit-card"></i>
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-title">Thẻ tín dụng/ghi nợ</div>
+                        <div class="payment-description">Visa, Mastercard, JCB và các thẻ khác</div>
+                    </div>
+                    <input type="radio" name="payment" id="credit">
+                </div>
+            </div>
+            
+            <div class="card-preview" id="card-preview" style="display: none;">
+                <div class="card-header">
+                    <span class="card-type">VISA</span>
+                    <i class="fas fa-microchip card-chip"></i>
+                </div>
+                <div class="card-number">•••• •••• •••• 4242</div>
+                <div class="card-footer">
+                    <span class="card-name">NGUYEN VAN A</span>
+                    <span class="card-expiry">09/25</span>
+                </div>
+            </div>
+            
+            
+            <div class="order-summary">
+                <h3 class="summary-title">
+                    <i class="fas fa-receipt"></i>
+                    Tóm tắt đơn hàng
+                </h3>
+                
+                <div class="order-items">
+                    <div class="order-item">
+                        <span class="item-name">Áo thun cao cấp (x2)</span>
+                        <span class="item-value">1,200,000đ</span>
+                    </div>
+                    <div class="order-item">
+                        <span class="item-name">Quần âu thiết kế</span>
+                        <span class="item-value">850,000đ</span>
+                    </div>
+                    <div class="order-item">
+                        <span class="item-name">Phí vận chuyển</span>
+                        <span class="item-value">50,000đ</span>
+                    </div>
+                    <div class="order-item">
+                        <span class="item-name">Giảm giá</span>
+                        <span class="item-value">-200,000đ</span>
+                    </div>
+                </div>
+                
+                <div class="order-item order-total">
+                    <span class="item-name">Tổng cộng</span>
+                    <span class="item-value">1,900,000đ</span>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-lock"></i>
+                HOÀN TẤT THANH TOÁN
+            </button>
+            
+            <div class="security-badges">
+                <div class="badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Bảo mật SSL 256-bit</span>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-lock"></i>
+                    <span>Dữ liệu được mã hóa</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.payment-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.payment-card').forEach(c => {
+                    c.classList.remove('active');
+                    c.querySelector('input').checked = false;
+                });
+                
+                this.classList.add('active');
+                this.querySelector('input').checked = true;
+                
+                const cardPreview = document.getElementById('card-preview');
+                if (this.dataset.method === 'credit') {
+                    cardPreview.style.display = 'block';
+                } else {
+                    cardPreview.style.display = 'none';
+                }
+            });
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thanh toán thành công! Cảm ơn bạn đã mua sắm.');
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.form-section, .order-summary, .btn').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
